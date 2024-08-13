@@ -25,10 +25,10 @@ let UsersService = class UsersService {
     async findUserByName(username) {
         return this.userModel.findOne({ username }).exec();
     }
-    async createUser(username, password) {
+    async createUser(username, password, isAdmin) {
         const hashedPassword = await bcrypt.hash(password, 10);
         const userId = await this.userModel.countDocuments() + 1;
-        const newUser = new this.userModel({ userId, username, password: hashedPassword });
+        const newUser = new this.userModel({ userId, username, password: hashedPassword, isAdmin });
         return newUser.save();
     }
 };

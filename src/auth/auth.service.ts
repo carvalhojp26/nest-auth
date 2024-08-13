@@ -12,6 +12,7 @@ type AuthInput = {
 type SignInData = {
     userId: number;
     username: string;
+    isAdmin: boolean;
 }
 
 type AuthResult = {
@@ -27,8 +28,8 @@ export class AuthService {
         private jwtService: JwtService  
     ) {}
 
-    async signUp(username: string, password: string): Promise<User> {
-        const user = await this.usersService.createUser(username, password);
+    async signUp(username: string, password: string, isAdmin: boolean): Promise<User> {
+        const user = await this.usersService.createUser(username, password, isAdmin);
 
         return user;
     }
@@ -49,7 +50,8 @@ export class AuthService {
         if(user && await bcrypt.compare(input.password, user.password)) {
             return {    
                 userId: user.userId,
-                username: user.username
+                username: user.username,
+                isAdmin: user.isAdmin
             };
         }
     
@@ -59,7 +61,8 @@ export class AuthService {
     async signIn(user: SignInData): Promise<AuthResult> {
         const tokenPayload = {
             sub: user.userId,
-            username: user.username 
+            username: user.username,
+            isAdmin: user.isAdmin
         }
 
         const accessToken = await this.jwtService.signAsync(tokenPayload)

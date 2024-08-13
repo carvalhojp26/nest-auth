@@ -27,7 +27,8 @@ let AuthGuard = class AuthGuard {
             const tokenPayload = await this.jwtService.verifyAsync(token);
             request.user = {
                 userId: tokenPayload.sub,
-                username: tokenPayload.username
+                username: tokenPayload.username,
+                isAdmin: tokenPayload.isAdmin
             };
             return true;
         }

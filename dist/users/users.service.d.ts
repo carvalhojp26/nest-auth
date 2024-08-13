@@ -4,5 +4,5 @@ export declare class UsersService {
     private userModel;
     constructor(userModel: Model<UserDocument>);
     findUserByName(username: string): Promise<User | undefined>;
-    createUser(username: string, password: string): Promise<User>;
+    createUser(username: string, password: string, isAdmin: boolean): Promise<User>;
 }

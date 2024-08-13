@@ -8,6 +8,7 @@ type AuthInput = {
 type SignInData = {
     userId: number;
     username: string;
+    isAdmin: boolean;
 };
 type AuthResult = {
     accessToken: string;
@@ -18,7 +19,7 @@ export declare class AuthService {
     private usersService;
     private jwtService;
     constructor(usersService: UsersService, jwtService: JwtService);
-    signUp(username: string, password: string): Promise<User>;
+    signUp(username: string, password: string, isAdmin: boolean): Promise<User>;
     authenticate(input: AuthInput): Promise<AuthResult>;
     validateUser(input: AuthInput): Promise<SignInData | null>;
     signIn(user: SignInData): Promise<AuthResult>;

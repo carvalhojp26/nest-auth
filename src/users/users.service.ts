@@ -14,10 +14,10 @@ export class UsersService {
         return this.userModel.findOne({ username }).exec()
     }
 
-    async createUser(username: string, password: string): Promise<User> {
+    async createUser(username: string, password: string, isAdmin: boolean): Promise<User> {
         const hashedPassword = await bcrypt.hash(password, 10);
         const userId = await this.userModel.countDocuments() + 1;
-        const newUser = new this.userModel({ userId, username, password: hashedPassword});
+        const newUser = new this.userModel({ userId, username, password: hashedPassword, isAdmin });
 
         return newUser.save();
     }

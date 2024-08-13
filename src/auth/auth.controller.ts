@@ -2,6 +2,7 @@ import { Controller, HttpCode, HttpStatus, NotImplementedException, Post, Body, 
 import { AuthService } from './auth.service';
 import { AuthGuard } from './guards/auth.guard';
 import { User } from 'src/users/users.schema';
+import { AdminGuard } from './guards/admin.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -9,8 +10,8 @@ export class AuthController {
 
     @HttpCode(HttpStatus.OK)
     @Post('signup')
-    async signUp(@Body('username') username: string, @Body('password') password: string): Promise<User> {
-        return this.authService.signUp(username, password)
+    async signUp(@Body('username') username: string, @Body('password') password: string, @Body('isAdmin') isAdmin: boolean): Promise<User> {
+        return this.authService.signUp(username, password, isAdmin)
     }
 
     @HttpCode(HttpStatus.OK)
@@ -23,5 +24,11 @@ export class AuthController {
     @Get('me')
     getUserInfo(@Request() request) {
         return request.user;
+    }
+
+    @UseGuards(AuthGuard, AdminGuard)
+    @Get('admin')
+    getAdminInfo(@Request() request) {
+        return "You are an admin"
     }
 }

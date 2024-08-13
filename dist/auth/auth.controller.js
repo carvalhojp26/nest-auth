@@ -16,18 +16,22 @@ exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const auth_guard_1 = require("./guards/auth.guard");
+const admin_guard_1 = require("./guards/admin.guard");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    async signUp(username, password) {
-        return this.authService.signUp(username, password);
+    async signUp(username, password, isAdmin) {
+        return this.authService.signUp(username, password, isAdmin);
     }
     login(input) {
         return this.authService.authenticate(input);
     }
     getUserInfo(request) {
         return request.user;
+    }
+    getAdminInfo(request) {
+        return "You are an admin";
     }
 };
 exports.AuthController = AuthController;
@@ -36,8 +40,9 @@ __decorate([
     (0, common_1.Post)('signup'),
     __param(0, (0, common_1.Body)('username')),
     __param(1, (0, common_1.Body)('password')),
+    __param(2, (0, common_1.Body)('isAdmin')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, String, Boolean]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signUp", null);
 __decorate([
@@ -56,6 +61,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "getUserInfo", null);
+__decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard, admin_guard_1.AdminGuard),
+    (0, common_1.Get)('admin'),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "getAdminInfo", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

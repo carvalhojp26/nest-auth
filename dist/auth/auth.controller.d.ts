@@ -3,7 +3,7 @@ import { User } from 'src/users/users.schema';
 export declare class AuthController {
     private authService;
     constructor(authService: AuthService);
-    signUp(username: string, password: string): Promise<User>;
+    signUp(username: string, password: string, isAdmin: boolean): Promise<User>;
     login(input: {
         username: string;
         password: string;
@@ -13,4 +13,5 @@ export declare class AuthController {
         username: string;
     }>;
     getUserInfo(request: any): any;
+    getAdminInfo(request: any): string;
 }
